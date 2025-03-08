@@ -32,6 +32,8 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(requests -> {
                     requests.requestMatchers("/api/v1/admin/**").hasAuthority("ROLE_USER")
                             .requestMatchers("/api/v1/**").permitAll()
+                            .requestMatchers("/api/v1/chat/**").permitAll()
+                            .requestMatchers("/ws").permitAll()
                             .requestMatchers(HttpMethod.GET, "/images/**").permitAll()
                             .anyRequest().authenticated();
 

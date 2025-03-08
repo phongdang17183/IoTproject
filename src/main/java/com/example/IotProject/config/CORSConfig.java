@@ -14,7 +14,7 @@ public class CORSConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:port")); // Allow all origins
+        configuration.setAllowedOriginPatterns(List.of("*")); // Cho phép tất cả các origin
 
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE",
                 "OPTIONS")); // Allowed methods

@@ -1,24 +1,22 @@
 package com.example.IotProject.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.messaging.simp.config.MessageBrokerRegistry;
-import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
-import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
-import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
+import org.springframework.web.socket.config.annotation.EnableWebSocket;
+import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
+import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
+
+import com.example.IotProject.component.MyWebSocketHandler;
 
 @Configuration
-@EnableWebSocketMessageBroker
-public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
-    @Override
-    public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws") // Định nghĩa endpoint WebSocket
-                .setAllowedOrigins("*") // Cho phép tất cả origin
-                .withSockJS(); // Hỗ trợ SockJS
-    }
+@EnableWebSocket
+public class WebSocketConfig implements WebSocketConfigurer {
+
+    @Autowired
+    private MyWebSocketHandler myWebSocketHandler; // Inject bean đã được Spring quản lý
 
     @Override
-    public void configureMessageBroker(MessageBrokerRegistry registry) {
-        registry.enableSimpleBroker("/topic"); // Kênh nhận dữ liệu từ server
-        registry.setApplicationDestinationPrefixes("/app"); // Tiền tố cho các API nhận request từ client
+    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+        registry.addHandler(myWebSocketHandler, "/ws").setAllowedOrigins("*");
     }
 }
